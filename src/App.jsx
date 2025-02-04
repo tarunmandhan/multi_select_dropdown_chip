@@ -12,6 +12,7 @@ const App = () => {
     fetch(`https://dummyjson.com/users/search?q=${searchTerm}`) // fetching data from dummyjson rest api
       .then((res) => res.json())
       .then((res) => setSuggestions(res)); // setting the fetched data to suggestions state
+    console.log("fetching users");
   };
 
   const handleSelectUser = (user) => {
@@ -48,7 +49,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    const debouncedTimer = setTimeout(() => {
+      fetchUsers();
+    }, 500);
+    return () => {
+      clearTimeout(debouncedTimer);
+    };
   }, [searchTerm]);
 
   console.log(selectedUsers);
